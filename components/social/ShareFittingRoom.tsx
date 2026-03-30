@@ -16,6 +16,7 @@ export default function ShareFittingRoom({ dressIds }: ShareFittingRoomProps) {
   const [open, setOpen] = useState(false)
   const [token, setToken] = useState<string | null>(null)
   const [generating, setGenerating] = useState(false)
+  const [shareError, setShareError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [showQR, setShowQR] = useState(false)
   const [showParentForm, setShowParentForm] = useState(false)
@@ -29,6 +30,7 @@ export default function ShareFittingRoom({ dressIds }: ShareFittingRoomProps) {
     setOpen(true)
     if (!token) {
       setGenerating(true)
+      setShareError(null)
       try {
         const newToken = crypto.randomUUID()
         const res = await fetch('/api/fitting-room', {
@@ -41,7 +43,11 @@ export default function ShareFittingRoom({ dressIds }: ShareFittingRoomProps) {
         })
         if (res.ok) {
           setToken(newToken)
+        } else {
+          setShareError('Could not generate share link. Please try again.')
         }
+      } catch {
+        setShareError('Could not generate share link. Please try again.')
       } finally {
         setGenerating(false)
       }
@@ -104,13 +110,19 @@ export default function ShareFittingRoom({ dressIds }: ShareFittingRoomProps) {
                 </button>
               </div>
 
-              {generating || !shareUrl ? (
+              {generating ? (
                 <div className="flex items-center justify-center py-8">
                   <div
                     className="w-7 h-7 rounded-full border-2 border-gold border-t-transparent animate-spin"
                     role="status"
                     aria-label="Generating share link"
                   />
+                </div>
+              ) : !shareUrl ? (
+                <div className="py-6 text-center">
+                  {shareError && (
+                    <p className="text-sm text-rose-400">{shareError}</p>
+                  )}
                 </div>
               ) : (
                 <div className="space-y-4">

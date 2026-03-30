@@ -2,7 +2,8 @@ import type { NextConfig } from 'next'
 
 const ContentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+  "script-src 'self'",
+  // style-src 'unsafe-inline' is required for Tailwind CSS utility classes injected at runtime
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data: https://*.supabase.co https://api.qrserver.com https://images.unsplash.com",
   "font-src 'self'",

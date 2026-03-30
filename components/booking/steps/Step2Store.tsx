@@ -8,6 +8,7 @@ import Button from '@/components/ui/Button'
 import Skeleton from '@/components/ui/Skeleton'
 import { MapPin, Check } from 'lucide-react'
 import { STATIC_BOUTIQUES } from '@/lib/data/boutiques'
+import { haversineDistance } from '@/lib/geo'
 
 interface BoutiqueRow {
   id: string
@@ -66,26 +67,11 @@ export function Step2Store({ selectedBoutiqueId, onNext, onBack }: Step2StorePro
     fetchBoutiques()
   }, [])
 
-  function haversineDistance(
-    lat1: number, lng1: number,
-    lat2: number, lng2: number
-  ): number {
-    const R = 3958.8 // miles
-    const dLat = ((lat2 - lat1) * Math.PI) / 180
-    const dLng = ((lng2 - lng1) * Math.PI) / 180
-    const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLng / 2) ** 2
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-  }
-
   const enriched = boutiques.map((b) => ({
     ...b,
     distance_miles:
       userCoords && b.lat != null && b.lng != null
-        ? haversineDistance(userCoords.lat, userCoords.lng, b.lat as number, b.lng as number)
+        ? haversineDistance(userCoords, { lat: b.lat as number, lng: b.lng as number })
         : undefined,
   }))
 

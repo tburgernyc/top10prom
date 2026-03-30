@@ -45,6 +45,9 @@ export default function Carousel({ items, className = '' }: CarouselProps) {
 
   return (
     <div className={['relative overflow-hidden', className].filter(Boolean).join(' ')}>
+      <span aria-live="polite" className="sr-only">
+        Slide {index + 1} of {items.length}
+      </span>
       {/* Slide area */}
       <div className="relative w-full">
         <AnimatePresence custom={direction} mode="wait">

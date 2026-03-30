@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import { aiRatelimit } from '@/lib/ratelimit'
+import { getClientIp } from '@/lib/request'
 import { genAI, getAriaSystemPrompt, withExponentialBackoff } from '@/lib/gemini'
 import type { EventType } from '@/types/index'
 
@@ -17,7 +18,7 @@ interface ChatRequestBody {
 }
 
 export async function POST(request: Request) {
-  const ip = (await headers()).get('x-forwarded-for') ?? '127.0.0.1'
+  const ip = getClientIp(await headers())
   const { success } = await aiRatelimit.limit(ip)
   if (!success) {
     return NextResponse.json({ error: 'Too many requests. Please try again shortly.' }, { status: 429 })

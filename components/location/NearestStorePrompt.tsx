@@ -80,7 +80,10 @@ export function NearestStorePrompt({ stores }: NearestStorePromptProps) {
 
   return (
     <div className="flex items-center justify-between gap-4 glass-light rounded-2xl px-5 py-4">
-      <p className="text-sm text-platinum">Find your nearest Top 10 Prom boutique</p>
+      <div className="min-w-0">
+        <p className="text-sm text-platinum">Find your nearest Top 10 Prom boutique</p>
+        <p className="text-xs text-platinum/50 mt-0.5">Your location is used only to sort stores by distance and is never stored.</p>
+      </div>
       <div className="flex items-center gap-2 shrink-0">
         <button
           onClick={() => void handleFindNearest()}

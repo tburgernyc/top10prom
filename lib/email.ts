@@ -32,11 +32,21 @@ export interface StaffInviteEmailData {
   inviteLink: string
 }
 
+// ── HTML escape helper ─────────────────────────────────────────────────────
+
+function esc(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
 // ── Email builders ─────────────────────────────────────────────────────────
 
 function buildBookingHtml(data: BookingEmailData): string {
   const dressLine = data.dressName
-    ? `<p><strong>Dress:</strong> ${data.dressName}</p>`
+    ? `<p><strong>Dress:</strong> ${esc(data.dressName)}</p>`
     : `<p><strong>Dress:</strong> To be selected in-store</p>`
 
   return `
@@ -53,13 +63,13 @@ function buildBookingHtml(data: BookingEmailData): string {
 
     <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;margin-bottom:24px;">
       <h2 style="color:#F5F5F5;font-size:18px;margin:0 0 16px;">Your appointment request has been received!</h2>
-      <p style="color:#C0C0C0;font-size:14px;margin:0 0 16px;">Hi ${data.customerName}, here are your booking details:</p>
+      <p style="color:#C0C0C0;font-size:14px;margin:0 0 16px;">Hi ${esc(data.customerName)}, here are your booking details:</p>
 
       <table style="width:100%;border-collapse:collapse;font-size:14px;">
-        <tr><td style="padding:8px 0;color:#C0C0C0;width:140px;">Store</td><td style="padding:8px 0;color:#F5F5F5;">${data.boutiqueName}</td></tr>
-        <tr><td style="padding:8px 0;color:#C0C0C0;">Appointment</td><td style="padding:8px 0;color:#F5F5F5;">${data.preferredDate} at ${data.preferredTime}</td></tr>
-        <tr><td style="padding:8px 0;color:#C0C0C0;">School</td><td style="padding:8px 0;color:#F5F5F5;">${data.schoolName}</td></tr>
-        <tr><td style="padding:8px 0;color:#C0C0C0;">Prom Date</td><td style="padding:8px 0;color:#F5F5F5;">${data.eventDate}</td></tr>
+        <tr><td style="padding:8px 0;color:#C0C0C0;width:140px;">Store</td><td style="padding:8px 0;color:#F5F5F5;">${esc(data.boutiqueName)}</td></tr>
+        <tr><td style="padding:8px 0;color:#C0C0C0;">Appointment</td><td style="padding:8px 0;color:#F5F5F5;">${esc(data.preferredDate)} at ${esc(data.preferredTime)}</td></tr>
+        <tr><td style="padding:8px 0;color:#C0C0C0;">School</td><td style="padding:8px 0;color:#F5F5F5;">${esc(data.schoolName)}</td></tr>
+        <tr><td style="padding:8px 0;color:#C0C0C0;">Prom Date</td><td style="padding:8px 0;color:#F5F5F5;">${esc(data.eventDate)}</td></tr>
       </table>
       ${dressLine}
     </div>
@@ -68,7 +78,7 @@ function buildBookingHtml(data: BookingEmailData): string {
       <p style="color:#C0C0C0;font-size:13px;margin:0;">Our team will confirm your appointment within <strong style="color:#D4AF37;">24 hours</strong>. If you need to make changes, please contact your boutique directly.</p>
     </div>
 
-    <p style="color:#C0C0C0;font-size:12px;text-align:center;margin:0;">Reference ID: ${data.inquiryId}</p>
+    <p style="color:#C0C0C0;font-size:12px;text-align:center;margin:0;">Reference ID: ${esc(data.inquiryId)}</p>
   </div>
 </body>
 </html>`.trim()
@@ -88,13 +98,13 @@ function buildParentBookingHtml(data: BookingEmailData): string {
     </div>
 
     <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;margin-bottom:24px;">
-      <p style="color:#C0C0C0;font-size:14px;margin:0 0 16px;">This is to inform you that <strong style="color:#F5F5F5;">${data.customerName}</strong> has submitted a prom dress appointment request at Top 10 Prom:</p>
+      <p style="color:#C0C0C0;font-size:14px;margin:0 0 16px;">This is to inform you that <strong style="color:#F5F5F5;">${esc(data.customerName)}</strong> has submitted a prom dress appointment request at Top 10 Prom:</p>
 
       <table style="width:100%;border-collapse:collapse;font-size:14px;">
-        <tr><td style="padding:8px 0;color:#C0C0C0;width:140px;">Store</td><td style="padding:8px 0;color:#F5F5F5;">${data.boutiqueName}</td></tr>
-        <tr><td style="padding:8px 0;color:#C0C0C0;">Appointment</td><td style="padding:8px 0;color:#F5F5F5;">${data.preferredDate} at ${data.preferredTime}</td></tr>
-        <tr><td style="padding:8px 0;color:#C0C0C0;">School</td><td style="padding:8px 0;color:#F5F5F5;">${data.schoolName}</td></tr>
-        <tr><td style="padding:8px 0;color:#C0C0C0;">Prom Date</td><td style="padding:8px 0;color:#F5F5F5;">${data.eventDate}</td></tr>
+        <tr><td style="padding:8px 0;color:#C0C0C0;width:140px;">Store</td><td style="padding:8px 0;color:#F5F5F5;">${esc(data.boutiqueName)}</td></tr>
+        <tr><td style="padding:8px 0;color:#C0C0C0;">Appointment</td><td style="padding:8px 0;color:#F5F5F5;">${esc(data.preferredDate)} at ${esc(data.preferredTime)}</td></tr>
+        <tr><td style="padding:8px 0;color:#C0C0C0;">School</td><td style="padding:8px 0;color:#F5F5F5;">${esc(data.schoolName)}</td></tr>
+        <tr><td style="padding:8px 0;color:#C0C0C0;">Prom Date</td><td style="padding:8px 0;color:#F5F5F5;">${esc(data.eventDate)}</td></tr>
       </table>
     </div>
 
@@ -118,10 +128,10 @@ function buildStaffInviteHtml(data: StaffInviteEmailData): string {
     </div>
 
     <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;margin-bottom:24px;">
-      <p style="color:#C0C0C0;font-size:14px;margin:0 0 16px;">You have been invited to join <strong style="color:#F5F5F5;">${data.boutiqueName}</strong> as a <strong style="color:#D4AF37;">${data.role}</strong>.</p>
+      <p style="color:#C0C0C0;font-size:14px;margin:0 0 16px;">You have been invited to join <strong style="color:#F5F5F5;">${esc(data.boutiqueName)}</strong> as a <strong style="color:#D4AF37;">${esc(data.role)}</strong>.</p>
       <p style="color:#C0C0C0;font-size:14px;margin:0 0 24px;">Click the button below to accept your invitation and set up your account:</p>
       <div style="text-align:center;">
-        <a href="${data.inviteLink}" style="display:inline-block;padding:12px 32px;background:#D4AF37;color:#050505;font-weight:700;text-decoration:none;border-radius:10px;font-size:14px;">Accept Invitation</a>
+        <a href="${esc(encodeURI(data.inviteLink))}" style="display:inline-block;padding:12px 32px;background:#D4AF37;color:#050505;font-weight:700;text-decoration:none;border-radius:10px;font-size:14px;">Accept Invitation</a>
       </div>
     </div>
 
@@ -141,8 +151,9 @@ export interface ParentShareEmailData {
 
 function buildParentShareHtml(data: ParentShareEmailData): string {
   const boutiqueFragment = data.boutiqueName
-    ? ` from <strong style="color:#F5F5F5;">${data.boutiqueName}</strong>`
+    ? ` from <strong style="color:#F5F5F5;">${esc(data.boutiqueName)}</strong>`
     : ''
+  const safeShareUrl = esc(encodeURI(data.shareUrl))
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -154,20 +165,20 @@ function buildParentShareHtml(data: ParentShareEmailData): string {
       <h1 style="color:#D4AF37;font-size:22px;margin:8px 0 4px;">Top 10 Prom</h1>
     </div>
     <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;margin-bottom:24px;">
-      <h2 style="color:#F5F5F5;font-size:18px;margin:0 0 12px;">Hi ${data.parentName} 👋</h2>
+      <h2 style="color:#F5F5F5;font-size:18px;margin:0 0 12px;">Hi ${esc(data.parentName)} 👋</h2>
       <p style="color:#C0C0C0;font-size:15px;line-height:1.6;margin-bottom:20px;">
-        Someone has picked out <strong style="color:#F5F5F5;">${data.dressName}</strong>${boutiqueFragment}
+        Someone has picked out <strong style="color:#F5F5F5;">${esc(data.dressName)}</strong>${boutiqueFragment}
         and wants your opinion before booking an appointment.
       </p>
       <div style="text-align:center;margin-bottom:8px;">
-        <a href="${data.shareUrl}" style="display:inline-block;background:#D4AF37;color:#050505;text-decoration:none;font-weight:700;padding:14px 32px;border-radius:12px;font-size:15px;">
+        <a href="${safeShareUrl}" style="display:inline-block;background:#D4AF37;color:#050505;text-decoration:none;font-weight:700;padding:14px 32px;border-radius:12px;font-size:15px;">
           View Picks &amp; Vote →
         </a>
       </div>
     </div>
     <p style="color:#C0C0C0;font-size:12px;text-align:center;margin:0;border-top:1px solid rgba(255,255,255,0.1);padding-top:16px;">
       Top 10 Prom · One dress. One school. One night to remember.<br/>
-      <a href="${data.shareUrl}" style="color:#D4AF37;">${data.shareUrl}</a>
+      <a href="${safeShareUrl}" style="color:#D4AF37;">${esc(data.shareUrl)}</a>
     </p>
   </div>
 </body>

@@ -35,8 +35,8 @@ describe('signupSchema', () => {
   const valid = {
     full_name: 'Jane Doe',
     email: 'jane@example.com',
-    password: 'securepass1',
-    confirm_password: 'securepass1',
+    password: 'Securepass1',
+    confirm_password: 'Securepass1',
   }
 
   it('accepts valid signup data', () => {

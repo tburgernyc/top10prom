@@ -52,9 +52,11 @@ export async function loginAction(
     redirect('/saas/staff')
   }
 
-  // Customer: honour the redirect param or fall back to profile
-  const redirectTo = formData.get('redirect') as string | null
-  redirect(redirectTo ?? '/profile')
+  // Customer: honour the redirect param or fall back to profile.
+  // Only allow relative paths starting with / to prevent open-redirect attacks.
+  const redirectParam = formData.get('redirect') as string | null
+  const redirectTo = redirectParam && /^\/[^/\\]/.test(redirectParam) ? redirectParam : '/profile'
+  redirect(redirectTo)
 }
 
 export async function signupAction(

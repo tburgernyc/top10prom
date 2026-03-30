@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { apiRatelimit } from '@/lib/ratelimit'
 import { headers } from 'next/headers'
+import { getClientIp } from '@/lib/request'
 
 const postSchema = z.object({
   dress_ids: z.array(z.string().uuid()),
@@ -16,7 +17,7 @@ const patchSchema = z.object({
 
 // GET ?token=TOKEN — fetch fitting_room_sessions by share_token (public)
 export async function GET(request: Request) {
-  const ip = (await headers()).get('x-forwarded-for') ?? '127.0.0.1'
+  const ip = getClientIp(await headers())
   const { success } = await apiRatelimit.limit(ip)
   if (!success) {
     return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
@@ -45,7 +46,7 @@ export async function GET(request: Request) {
 
 // POST { dress_ids, share_token } — create a new fitting room session
 export async function POST(request: Request) {
-  const ip = (await headers()).get('x-forwarded-for') ?? '127.0.0.1'
+  const ip = getClientIp(await headers())
   const { success } = await apiRatelimit.limit(ip)
   if (!success) {
     return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
@@ -91,7 +92,7 @@ export async function POST(request: Request) {
 
 // PATCH { id, dress_ids } — update dress_ids on an existing session
 export async function PATCH(request: Request) {
-  const ip = (await headers()).get('x-forwarded-for') ?? '127.0.0.1'
+  const ip = getClientIp(await headers())
   const { success } = await apiRatelimit.limit(ip)
   if (!success) {
     return NextResponse.json({ error: 'Too many requests' }, { status: 429 })

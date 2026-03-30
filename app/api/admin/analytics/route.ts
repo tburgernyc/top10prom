@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { apiRatelimit } from '@/lib/ratelimit'
 import { headers } from 'next/headers'
+import { getClientIp } from '@/lib/request'
 
 // GET ?from=ISO&to=ISO&boutiqueId=optional
 // Requires authenticated user with system_role === 'SUPER_ADMIN'
 export async function GET(request: Request) {
-  const ip = (await headers()).get('x-forwarded-for') ?? '127.0.0.1'
+  const ip = getClientIp(await headers())
   const { success } = await apiRatelimit.limit(ip)
   if (!success) {
     return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
@@ -24,10 +26,22 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
+  const querySchema = z.object({
+    from: z.string().datetime({ offset: true }).optional(),
+    to: z.string().datetime({ offset: true }).optional(),
+    boutiqueId: z.string().uuid().optional(),
+  })
+
   const { searchParams } = new URL(request.url)
-  const from = searchParams.get('from')
-  const to = searchParams.get('to')
-  const boutiqueId = searchParams.get('boutiqueId')
+  const q = querySchema.safeParse({
+    from: searchParams.get('from') ?? undefined,
+    to: searchParams.get('to') ?? undefined,
+    boutiqueId: searchParams.get('boutiqueId') ?? undefined,
+  })
+  if (!q.success) {
+    return NextResponse.json({ error: 'Invalid query parameters' }, { status: 400 })
+  }
+  const { from, to, boutiqueId } = q.data
 
   let query = supabase
     .from('appointments')

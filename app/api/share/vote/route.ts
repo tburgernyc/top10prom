@@ -1,18 +1,19 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
+import { createHash } from 'crypto'
 import { createClient } from '@/lib/supabase/server'
 import { apiRatelimit } from '@/lib/ratelimit'
 import { headers } from 'next/headers'
+import { getClientIp } from '@/lib/request'
 
 const schema = z.object({
   dressId: z.string().uuid('Valid dress ID required'),
   shareToken: z.string().uuid('Valid share token required'),
   vote: z.enum(['up', 'down']),
-  voterName: z.string().min(1).default('Guest'),
 })
 
 export async function POST(request: Request) {
-  const ip = (await headers()).get('x-forwarded-for') ?? '127.0.0.1'
+  const ip = getClientIp(await headers())
   const { success } = await apiRatelimit.limit(ip)
   if (!success) {
     return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
@@ -33,7 +34,10 @@ export async function POST(request: Request) {
     )
   }
 
-  const { dressId, shareToken, vote, voterName } = parsed.data
+  const { dressId, shareToken, vote } = parsed.data
+  // Derive a deterministic, anonymous voter slot from IP + session — prevents vote stuffing
+  // while avoiding storage of PII.
+  const voterName = createHash('sha256').update(`${ip}:${shareToken}`).digest('hex').slice(0, 16)
 
   const supabase = await createClient()
 

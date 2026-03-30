@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { SPRING_STANDARD } from '@/lib/motion'
 import { BookingProgress } from './BookingProgress'
 import { Step0SelectEvent } from './steps/Step0SelectEvent'
 import { Step1Dress, type DressPreferences } from './steps/Step1Dress'
@@ -110,7 +111,7 @@ export function BookingWizard({ initialDressId }: BookingWizardProps) {
           initial={shouldReduce ? {} : { opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           exit={shouldReduce ? {} : { opacity: 0, x: -20 }}
-          transition={{ type: 'spring', stiffness: 320, damping: 32 }}
+          transition={SPRING_STANDARD}
         >
           {step === 0 && (
             <Step0SelectEvent

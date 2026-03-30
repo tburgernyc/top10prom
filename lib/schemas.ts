@@ -10,7 +10,11 @@ export const signupSchema = z
   .object({
     full_name: z.string().min(2, 'Full name is required'),
     email: z.string().email('Enter a valid email address'),
-    password: z.string().min(8, 'Password must be at least 8 characters'),
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .refine((p) => /[A-Z]/.test(p), 'Password must contain at least one uppercase letter')
+      .refine((p) => /[0-9]/.test(p), 'Password must contain at least one number'),
     confirm_password: z.string(),
   })
   .refine((d) => d.password === d.confirm_password, {
@@ -138,7 +142,7 @@ export const walkInSchema = z.object({
   lastName: z.string().min(1, 'Last name is required'),
   phone: z.string().optional(),
   email: z.string().email('Enter a valid email').optional().or(z.literal('')),
-  notes: z.string().optional(),
+  notes: z.string().max(1000, 'Notes must be under 1000 characters').optional(),
 })
 
 export type WalkInValues = z.infer<typeof walkInSchema>

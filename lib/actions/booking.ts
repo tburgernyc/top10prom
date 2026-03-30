@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { sendBookingConfirmationEmails } from '@/lib/email'
+import { fullBookingSchema } from '@/lib/schemas'
 import type { ActionState, Boutique } from '@/types/index'
 
 export type BookingFormState = ActionState<{ inquiryId: string }>
@@ -26,17 +27,23 @@ export async function submitBookingAction(
   const event_date = formData.get('event_date') as string
   const notes = (formData.get('notes') as string) || null
 
-  if (
-    !boutique_id ||
-    !preferred_date ||
-    !preferred_time ||
-    !customer_name ||
-    !customer_email ||
-    !parent_email ||
-    !school_name ||
-    !event_date
-  ) {
-    return { status: 'error', message: 'Missing required booking fields.' }
+  const schemaResult = fullBookingSchema.safeParse({
+    event_type,
+    dress_id: dress_id ?? '',
+    boutique_id,
+    preferred_date,
+    preferred_time,
+    customer_name,
+    customer_email,
+    customer_phone: customer_phone ?? '',
+    parent_email,
+    parent_phone: parent_phone ?? '',
+    school_name,
+    event_date,
+    notes: notes ?? '',
+  })
+  if (!schemaResult.success) {
+    return { status: 'error', message: 'Invalid booking data. Please go back and check your entries.' }
   }
 
   const {
@@ -48,7 +55,9 @@ export async function submitBookingAction(
     const { data: inquiry, error: inquiryError } = await supabase
       .from('availability_inquiries')
       .insert({
-        ...(dress_id ? { dress_id } : { dress_id: '00000000-0000-0000-0000-000000000000' }),
+        // dress_id is nullable in the DB; the Supabase-generated type is overly strict here.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        dress_id: (dress_id ?? null) as any,
         boutique_id,
         customer_id: user?.id ?? null,
         customer_name,

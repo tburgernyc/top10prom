@@ -81,6 +81,7 @@ export default function WalkInForm() {
             rows={3}
             className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-ivory placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-gold/40 resize-none text-sm"
             placeholder="Optional notes about the customer…"
+            maxLength={1000}
           />
         </div>
 

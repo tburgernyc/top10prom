@@ -93,7 +93,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             size={size === 'sm' ? 14 : 16}
           />
         )}
-        {children}
+        <span className={loading ? 'sr-only' : undefined}>{children}</span>
       </motion.button>
     )
   }

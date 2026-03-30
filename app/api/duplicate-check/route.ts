@@ -2,11 +2,12 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { apiRatelimit } from '@/lib/ratelimit'
 import { headers } from 'next/headers'
+import { getClientIp } from '@/lib/request'
 
 // Checks whether a dress has already been reserved for a given school + event date
 // combination. Used by the booking wizard to enforce the no-duplicate guarantee.
 export async function GET(request: Request) {
-  const ip = (await headers()).get('x-forwarded-for') ?? '127.0.0.1'
+  const ip = getClientIp(await headers())
   const { success } = await apiRatelimit.limit(ip)
   if (!success) {
     return NextResponse.json({ error: 'Too many requests' }, { status: 429 })

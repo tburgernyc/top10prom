@@ -23,6 +23,8 @@ interface ToastContextValue {
   toast: (message: string, type?: ToastType) => void
 }
 
+let _toastSeq = 0
+
 const ToastContext = createContext<ToastContextValue | null>(null)
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
@@ -36,7 +38,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 
   const toast = useCallback(
     (message: string, type: ToastType = 'info') => {
-      const id = `${uid}-${Date.now()}`
+      const id = `${uid}-${++_toastSeq}`
       setToasts((prev) => [...prev.slice(-4), { id, type, message }])
       setTimeout(() => dismiss(id), 4500)
     },

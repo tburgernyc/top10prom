@@ -40,8 +40,10 @@ export function BoutiqueControlRow({ store }: BoutiqueControlRowProps) {
   }
 
   function cycleSubscription() {
+    const next = NEXT_SUB_STATUS[store.subscription_status]
+    if (!confirm(`Change subscription status to ${next}?`)) return
     startTransition(async () => {
-      await setBoutiqueSubscriptionStatus(store.id, NEXT_SUB_STATUS[store.subscription_status])
+      await setBoutiqueSubscriptionStatus(store.id, next)
     })
   }
 

@@ -174,6 +174,17 @@ export async function setStaffActiveStatus(
     return { status: 'error', message: 'Unauthorized' }
   }
 
+  // Prevent deactivating an OWNER account (guards against accidental lockout)
+  const { data: target } = await supabase
+    .from('store_staff')
+    .select('role')
+    .eq('id', staffId)
+    .eq('store_id', storeId)
+    .single()
+  if (target?.role === 'OWNER') {
+    return { status: 'error', message: 'Owner accounts cannot be deactivated.' }
+  }
+
   // Double guard: JWT check above + .eq('store_id', storeId) below
   const { error } = await supabase
     .from('store_staff')

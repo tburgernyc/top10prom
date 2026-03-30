@@ -4,15 +4,7 @@ import { useEffect, useId, useRef } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
 import { X } from 'lucide-react'
 import { SPRING_STANDARD } from '@/lib/motion'
-
-const FOCUSABLE = [
-  'a[href]',
-  'button:not([disabled])',
-  'input:not([disabled])',
-  'select:not([disabled])',
-  'textarea:not([disabled])',
-  '[tabindex]:not([tabindex="-1"])',
-].join(',')
+import { useFocusTrap } from '@/lib/a11y'
 
 interface ModalProps {
   open: boolean
@@ -33,50 +25,20 @@ export default function Modal({
   const titleId = useId()
   const panelRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
+  const prevFocusRef = useRef<HTMLElement | null>(null)
 
-  // Focus the close button on open
+  useFocusTrap(panelRef, open, onClose)
+
+  // Focus the close button on open; restore focus to trigger element on close
   useEffect(() => {
     if (open) {
+      prevFocusRef.current = document.activeElement as HTMLElement
       closeRef.current?.focus()
+    } else {
+      prevFocusRef.current?.focus()
+      prevFocusRef.current = null
     }
   }, [open])
-
-  // Close on Escape; trap focus within panel
-  useEffect(() => {
-    if (!open) return
-
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose()
-        return
-      }
-
-      if (e.key !== 'Tab') return
-
-      const panel = panelRef.current
-      if (!panel) return
-      const focusable = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE))
-      if (focusable.length === 0) return
-
-      const first = focusable[0]!
-      const last  = focusable[focusable.length - 1]!
-
-      if (e.shiftKey) {
-        if (document.activeElement === first) {
-          e.preventDefault()
-          last.focus()
-        }
-      } else {
-        if (document.activeElement === last) {
-          e.preventDefault()
-          first.focus()
-        }
-      }
-    }
-
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [open, onClose])
 
   return (
     <AnimatePresence>
