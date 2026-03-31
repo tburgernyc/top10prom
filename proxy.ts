@@ -36,8 +36,10 @@ export async function proxy(request: NextRequest) {
   // 1. UNAUTHENTICATED PROTECTION
   // =========================================================================
   const consumerProtected = ['/profile', '/fitting-room', '/wishlist']
+  // /saas/login is the public B2B portal entry — exempt from auth requirement
+  const saasPublic = ['/saas/login']
   const needsAuth =
-    path.startsWith('/saas') ||
+    (path.startsWith('/saas') && !saasPublic.some((p) => path === p || path.startsWith(`${p}/`))) ||
     consumerProtected.some((r) => path === r || path.startsWith(`${r}/`))
 
   if (!user && needsAuth) {
