@@ -11,9 +11,11 @@ interface UserMenuProps {
   userEmail: string
   /** Full display name — used to derive avatar initials */
   userName: string
+  /** Role-specific dashboard URL — shown at top of menu for staff/owner/admin */
+  dashboardHref?: string
 }
 
-export default function UserMenu({ userEmail, userName }: UserMenuProps) {
+export default function UserMenu({ userEmail, userName, dashboardHref }: UserMenuProps) {
   const shouldReduce = useReducedMotion()
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -69,6 +71,17 @@ export default function UserMenu({ userEmail, userName }: UserMenuProps) {
 
             {/* Links */}
             <nav className="py-1">
+              {dashboardHref && (
+                <Link
+                  href={dashboardHref}
+                  role="menuitem"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center justify-between gap-2 px-4 py-2.5 text-sm font-medium text-gold hover:bg-white/5 transition-colors border-b border-white/10 mb-1"
+                >
+                  Dashboard
+                  <span className="text-xs opacity-60">→</span>
+                </Link>
+              )}
               <Link
                 href="/profile"
                 role="menuitem"

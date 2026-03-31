@@ -36,6 +36,13 @@ export default function Navbar() {
     }
   }, [])
 
+  // Derive dashboard URL from role — mirrors proxy.ts smart login redirect
+  const dashboardHref =
+    user?.app_metadata?.system_role === 'SUPER_ADMIN' ? '/saas/admin' :
+    user?.app_metadata?.store_role   === 'OWNER'      ? '/saas/owner' :
+    user?.app_metadata?.store_role   === 'MANAGER' || user?.app_metadata?.store_role === 'ASSOCIATE'
+      ? '/saas/staff' : undefined
+
   return (
     <motion.header
       className="glass-heavy sticky top-0 z-40 h-16 w-full"
@@ -92,6 +99,15 @@ export default function Navbar() {
           >
             Boutiques
           </Link>
+          {/* Staff/owner/admin portal shortcut — only shown when role is resolved */}
+          {dashboardHref && (
+            <Link
+              href={dashboardHref}
+              className="flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-gold hover:bg-gold/20 transition-colors"
+            >
+              Dashboard
+            </Link>
+          )}
         </nav>
 
         {/* Right: auth — hidden until auth state is resolved */}
@@ -100,6 +116,7 @@ export default function Navbar() {
             <UserMenu
               userEmail={user.email ?? ''}
               userName={user.email ?? ''}
+              dashboardHref={dashboardHref}
             />
           ) : (
             <Link
