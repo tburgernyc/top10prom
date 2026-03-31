@@ -12,7 +12,7 @@ interface UserMenuProps {
   /** Full display name — used to derive avatar initials */
   userName: string
   /** Role-specific dashboard URL — shown at top of menu for staff/owner/admin */
-  dashboardHref?: string
+  dashboardHref?: string | undefined
 }
 
 export default function UserMenu({ userEmail, userName, dashboardHref }: UserMenuProps) {
