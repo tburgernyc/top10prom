@@ -1,0 +1,29 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Next.js Dev Server",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "Vitest (run once)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test"],
+      "port": null
+    },
+    {
+      "name": "Vitest (watch mode)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test:watch"],
+      "port": null
+    },
+    {
+      "name": "Vitest UI",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test:ui"],
+      "port": 51204
+    }
+  ]
+}
