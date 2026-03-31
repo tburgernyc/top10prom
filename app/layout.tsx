@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import { ServiceWorkerRegistration } from '@/components/pwa/ServiceWorkerRegistration'
+import SplashVideoBackground from '@/components/ui/SplashVideoBackground'
 import './globals.css'
 
 // Resolve the canonical base URL for OG images and absolute links.
@@ -40,6 +41,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen bg-onyx text-ivory antialiased">
         <ServiceWorkerRegistration />
+        <SplashVideoBackground />
         {children}
       </body>
     </html>
