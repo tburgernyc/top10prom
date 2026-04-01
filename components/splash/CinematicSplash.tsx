@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { useReducedMotion } from 'motion/react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { SplashFallback } from './SplashFallback'
 
@@ -60,6 +61,7 @@ const STATS = [
 
 export function CinematicSplash() {
   const shouldReduce = useReducedMotion()
+  const router = useRouter()
 
   const wrapperRef  = useRef<HTMLDivElement>(null)
   const contentRef  = useRef<HTMLDivElement>(null)
@@ -93,6 +95,16 @@ export function CinematicSplash() {
         smooth: 1.5,
         effects: true,
       })
+
+      // Auto-navigate to /home when user reaches end of scroll experience
+      if (contentRef.current) {
+        const endTrigger = ScrollTrigger.create({
+          trigger: contentRef.current,
+          start: '95% top',
+          onEnter: () => { router.push('/home') },
+        })
+        scrollTriggers = [...scrollTriggers, endTrigger]
+      }
 
       // Gold flash at 62% of scroll timeline
       if (flashRef.current && contentRef.current) {

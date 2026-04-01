@@ -55,7 +55,7 @@ export default function TryOnPromo() {
           <div className="flex items-center gap-2">
             <Camera size={16} className="text-gold" />
             <span className="text-gold text-[11px] font-semibold tracking-[0.22em] uppercase">
-              New Feature
+              Exclusively at Top 10
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-ivory leading-tight">

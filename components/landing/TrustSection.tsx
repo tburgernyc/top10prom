@@ -46,7 +46,7 @@ export default function TrustSection() {
             }}
             aria-hidden="true"
           >
-            1K+
+            10K+
           </div>
           <div>
             <Sparkles size={20} className="text-gold mb-4" />
@@ -142,9 +142,12 @@ export default function TrustSection() {
               </span>
             </div>
           </div>
-          <p className="text-platinum/40 text-xs mt-4 leading-relaxed">
-            New arrivals added weekly from every major prom house.
-          </p>
+          <Link
+            href="/catalog"
+            className="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-gold hover:text-gold/80 transition-colors"
+          >
+            Browse all designers <ArrowRight size={12} />
+          </Link>
         </motion.div>
 
         {/* Card 4 — personal appointments */}

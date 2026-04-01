@@ -19,8 +19,6 @@ export default async function FeaturedDresses() {
       ? (data as Dress[])
       : (STATIC_DRESSES.slice(0, 6) as unknown as Dress[])
 
-  if (dresses.length === 0) return null
-
   return (
     <section className="max-w-7xl mx-auto px-4 space-y-6">
       <div className="flex items-end justify-between gap-4">

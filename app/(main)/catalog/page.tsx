@@ -6,8 +6,8 @@ import type { Dress } from '@/types/index'
 import CatalogClient from './CatalogClient'
 
 export const metadata: Metadata = {
-  title: 'Catalog | Top 10 Prom',
-  description: 'Browse our collection of prom and wedding dresses.',
+  title: 'Shop Dresses | Top 10 Prom',
+  description: '500+ exclusive prom & bridal styles from the world\'s top designers — yours and yours alone.',
 }
 
 export default async function CatalogPage() {
@@ -22,10 +22,10 @@ export default async function CatalogPage() {
   return (
     <main className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-ivory mb-2">
-        Dress Catalog
+        Find Your Perfect Dress
       </h1>
       <p className="text-platinum text-sm mb-6">
-        Find your perfect look for prom or your wedding day.
+        500+ exclusive styles from the world&apos;s top designers — yours and yours alone.
       </p>
 
       <Suspense

@@ -6,8 +6,8 @@ import { NearestStorePrompt } from '@/components/location/NearestStorePrompt'
 import type { Database } from '@/types/database'
 
 export const metadata: Metadata = {
-  title: 'Boutique Locations | Top 10 Prom',
-  description: 'Find a Top 10 Prom boutique near you across Georgia.',
+  title: 'Visit a Boutique | Top 10 Prom',
+  description: 'Private styling appointments at Top 10 Prom boutiques across Atlanta. Find the dress that\'s exclusively yours.',
 }
 
 type BoutiqueRow = Database['public']['Tables']['boutiques']['Row']
@@ -43,9 +43,9 @@ export default async function BoutiquesPage() {
   return (
     <main className="container mx-auto px-4 py-8 space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-ivory mb-2">Our Boutiques</h1>
+        <h1 className="text-3xl font-bold text-ivory mb-2">Visit a Top 10 Prom Boutique</h1>
         <p className="text-platinum">
-          {stores.length} location{stores.length !== 1 ? 's' : ''} across Georgia
+          Private styling appointments at {stores.length} location{stores.length !== 1 ? 's' : ''} across Atlanta. Book your fitting and find the dress that&apos;s exclusively yours.
         </p>
       </div>
 
