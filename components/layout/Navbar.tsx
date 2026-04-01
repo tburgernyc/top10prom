@@ -104,7 +104,7 @@ export default function Navbar() {
   return (
     <>
       {/* ── Sticky header ─────────────────────────────────────────────────── */}
-      <motion.header
+      <header
         role="banner"
         className={[
           'sticky top-0 z-40 h-16 w-full transition-all duration-300',
@@ -112,9 +112,6 @@ export default function Navbar() {
             ? 'bg-onyx/80 backdrop-blur-md border-b border-white/10 shadow-lg shadow-black/20'
             : 'bg-transparent',
         ].join(' ')}
-        initial={shouldReduce ? false : { y: -8, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={shouldReduce ? { duration: 0 } : SPRING_STANDARD}
       >
         <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 md:px-6">
 
@@ -231,7 +228,7 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-      </motion.header>
+      </header>
 
       {/* ── Mobile drawer ───────────────────────────────────────────────────── */}
       <AnimatePresence>
