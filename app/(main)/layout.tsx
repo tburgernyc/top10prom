@@ -13,7 +13,7 @@ export default function MainLayout({
   return (
     <ToastProvider>
       <Navbar />
-      <main className="pb-20 md:pb-0 min-h-screen">
+      <main className="pb-20 md:pb-0 min-h-screen pt-[76px]">
         {children}
       </main>
       <Footer />

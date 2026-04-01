@@ -103,43 +103,39 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ── Sticky header ─────────────────────────────────────────────────── */}
+      {/* ── Floating pill header ───────────────────────────────────────────── */}
       <header
         role="banner"
-        className={[
-          'sticky top-0 z-40 h-16 w-full transition-all duration-300',
-          scrolled
-            ? 'bg-onyx/80 backdrop-blur-md border-b border-white/10 shadow-lg shadow-black/20'
-            : 'bg-transparent',
-        ].join(' ')}
+        className="fixed top-0 left-0 right-0 z-40 flex justify-center px-4 pt-3 pointer-events-none"
       >
-        <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 md:px-6">
+        <div
+          className={[
+            'pointer-events-auto flex items-center gap-2 w-full max-w-[860px] px-3 py-2 rounded-full transition-all duration-300',
+            'bg-onyx/70 backdrop-blur-xl border shadow-lg shadow-black/30',
+            scrolled ? 'border-white/20 shadow-black/40' : 'border-white/10',
+          ].join(' ')}
+        >
+          {/* ── Logo ──────────────────────────────────────────────────────── */}
+          <Link
+            href="/"
+            className="shrink-0 font-bold text-gold text-sm tracking-tight hover:opacity-90 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-full px-2 py-1"
+          >
+            Top 10 Prom
+          </Link>
 
-          {/* ── Left: wordmark + boutique pill ──────────────────────────── */}
-          <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              className="font-bold text-gold text-lg tracking-tight hover:opacity-90 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-onyx rounded-sm"
-            >
-              Top 10 Prom
-            </Link>
-            {_hasHydrated && activeBoutiqueSlug && (
-              <span className="hidden md:inline-flex items-center rounded-full border border-gold/30 bg-gold/10 px-2.5 py-0.5 text-xs text-gold">
-                {activeBoutiqueSlug}
-              </span>
-            )}
-          </div>
+          {/* Divider */}
+          <div className="hidden md:block w-px h-4 bg-white/15 mx-1 shrink-0" aria-hidden="true" />
 
-          {/* ── Center: desktop nav links ────────────────────────────────── */}
+          {/* ── Center: desktop nav links ──────────────────────────────── */}
           <nav
-            className="hidden md:flex items-center gap-1"
+            className="hidden md:flex items-center gap-0.5 flex-1"
             aria-label="Main navigation"
           >
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="px-3 py-1.5 rounded-lg text-sm text-platinum hover:text-ivory hover:bg-white/5 active:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-onyx"
+                className="px-3 py-1.5 rounded-full text-sm text-platinum/80 hover:text-ivory hover:bg-white/8 active:bg-white/12 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold whitespace-nowrap"
               >
                 {link.label}
               </Link>
@@ -149,56 +145,69 @@ export default function Navbar() {
             {dashboardHref && (
               <Link
                 href={dashboardHref}
-                className="ml-2 flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-gold hover:bg-gold/20 active:bg-gold/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                className="ml-1 flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-gold hover:bg-gold/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
               >
-                <LayoutDashboard size={12} aria-hidden="true" />
+                <LayoutDashboard size={11} aria-hidden="true" />
                 Dashboard
               </Link>
             )}
           </nav>
 
-          {/* ── Right: CTAs + icons + auth ───────────────────────────────── */}
-          <div className="flex items-center gap-2">
+          {/* Spacer on mobile */}
+          <div className="flex-1 md:hidden" aria-hidden="true" />
 
-            {/* Try-On CTA — desktop */}
+          {/* Divider */}
+          <div className="hidden md:block w-px h-4 bg-white/15 mx-1 shrink-0" aria-hidden="true" />
+
+          {/* ── Right: CTAs + icons + auth ─────────────────────────────── */}
+          <div className="flex items-center gap-1 shrink-0">
+
+            {/* Try-On ghost CTA — desktop */}
             <Link
               href="/fitting-room"
               aria-label="Virtual try-on"
-              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium text-platinum border border-white/10 hover:border-white/25 hover:text-ivory hover:bg-white/5 active:bg-white/10 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-platinum/80 border border-white/15 hover:border-white/30 hover:text-ivory hover:bg-white/5 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold whitespace-nowrap"
             >
-              <Sparkles size={14} aria-hidden="true" />
+              <Sparkles size={12} aria-hidden="true" />
               Try-On
             </Link>
 
-            {/* Book Fitting CTA — desktop */}
+            {/* Book Fitting gold CTA — desktop */}
             <Link
               href="/book"
               aria-label="Book a fitting appointment"
-              className="hidden md:flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-sm font-semibold bg-gold text-onyx hover:brightness-110 active:brightness-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-onyx"
+              className="hidden md:flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold bg-gold text-onyx hover:brightness-110 active:brightness-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-1 focus-visible:ring-offset-onyx whitespace-nowrap"
             >
-              <CalendarCheck size={14} aria-hidden="true" />
+              <CalendarCheck size={12} aria-hidden="true" />
               Book Fitting
             </Link>
 
-            {/* Shopping bag / fitting room — all screen sizes */}
+            {/* Boutique slug badge */}
+            {_hasHydrated && activeBoutiqueSlug && (
+              <span className="hidden md:inline-flex items-center rounded-full border border-gold/30 bg-gold/10 px-2.5 py-0.5 text-xs text-gold">
+                {activeBoutiqueSlug}
+              </span>
+            )}
+
+            {/* Shopping bag */}
             <Link
               href="/fitting-room"
               aria-label={`Fitting room${fittingRoomCount > 0 ? `, ${fittingRoomCount} items` : ''}`}
-              className="relative flex h-9 w-9 items-center justify-center rounded-full text-platinum hover:text-ivory hover:bg-white/5 active:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+              className="relative flex h-8 w-8 items-center justify-center rounded-full text-platinum hover:text-ivory hover:bg-white/8 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
             >
-              <ShoppingBag size={18} aria-hidden="true" />
+              <ShoppingBag size={16} aria-hidden="true" />
               {fittingRoomCount > 0 && (
                 <span
                   aria-hidden="true"
-                  className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-gold text-[10px] font-bold text-onyx"
+                  className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-gold text-[9px] font-bold text-onyx"
                 >
                   {fittingRoomCount > 9 ? '9+' : fittingRoomCount}
                 </span>
               )}
             </Link>
 
-            {/* Auth — hidden until resolved */}
-            <div className="flex items-center h-9 w-9 justify-center">
+            {/* Auth */}
+            <div className="flex items-center justify-center h-8">
               {user === undefined ? null : user ? (
                 <UserMenu
                   userEmail={user.email ?? ''}
@@ -208,7 +217,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href="/login"
-                  className="text-sm text-platinum hover:text-ivory transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-sm"
+                  className="px-3 py-1.5 rounded-full text-xs font-medium text-platinum/80 hover:text-ivory hover:bg-white/8 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                 >
                   Sign In
                 </Link>
@@ -222,9 +231,9 @@ export default function Navbar() {
               aria-label="Open menu"
               aria-expanded={drawerOpen}
               aria-controls="mobile-drawer"
-              className="flex md:hidden h-9 w-9 items-center justify-center rounded-full text-platinum hover:text-ivory hover:bg-white/5 active:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+              className="flex md:hidden h-8 w-8 items-center justify-center rounded-full text-platinum hover:text-ivory hover:bg-white/8 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
             >
-              <Menu size={20} aria-hidden="true" />
+              <Menu size={18} aria-hidden="true" />
             </button>
           </div>
         </div>
